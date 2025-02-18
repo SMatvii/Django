@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Категорія: {{ category_id }}</h1>
+
+    <div class="items-list">
+        {% for item in items %}
+            <div class="item">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.description }}</p>
+                <p><strong>Ціна:</strong> {{ item.price }} грн</p>
+                <a href="{% url 'blog:item_detail' item.id %}">Детальніше</a>
+                <form action="{% url 'blog:delete_item' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Ви дійсно хочете видалити цей товар?')">Видалити товар</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>У категорії немає товарів.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'blog:create_item' %}" class="btn">Додати товар</a>
+{% endblock %}
